@@ -33,12 +33,16 @@ public class Sale extends Post {
 	public String getPostDetails() {
 		StringBuilder detailsStr = new StringBuilder(super.getPostDetails());
 		
-		detailsStr.append("Asking Price:\t\t"+getAskingPrice());
-		detailsStr.append("Highest Offer:\t\t"+getHighestOffer());
-		detailsStr.append("Minimum Raise:\t\t"+getMinRaise());
+		if(getHighestOffer() == 0) {
+			detailsStr.append("Highest Offer:\tNO OFFER"+"\n");
+		}else {
+			detailsStr.append("Highest Offer:\t"+getHighestOffer()+"\n");
+		}
+		detailsStr.append("Minimum Raise:\t"+getMinRaise()+"\n");
 		
 		return detailsStr.toString();
 	}
+	
 	
 	public String getReplyDetails() {
 		return "";
@@ -75,4 +79,5 @@ public class Sale extends Post {
 		this.minRaise = minRaise;
 	}
 	// Getter - Setters
+	
 }

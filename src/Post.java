@@ -31,11 +31,11 @@ public abstract class Post {
 	public String getPostDetails() {
 		
 		StringBuilder detailsStr = new StringBuilder("");
-		detailsStr.append("ID:\t\t"+getID());
-		detailsStr.append("Title:\t\t"+getTitle());
-		detailsStr.append("Description:\t\t"+getDescription());
-		detailsStr.append("Creator ID:\t\t"+getCreatorID());
-		detailsStr.append("Status:\t\t"+getStatus());
+		detailsStr.append("ID:\t\t"+getID()+"\n");
+		detailsStr.append("Title:\t\t"+getTitle()+"\n");
+		detailsStr.append("Description:\t"+getDescription()+"\n");
+		detailsStr.append("Creator ID:\t"+getCreatorID()+"\n");
+		detailsStr.append("Status:\t\t"+getStatus()+"\n");
 		
 		return detailsStr.toString();
 	}

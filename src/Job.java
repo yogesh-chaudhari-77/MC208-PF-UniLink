@@ -13,7 +13,7 @@ public class Job extends Post {
 	
 	public Job(String title, String description, String creatorID, double proposedPrice) {
 		
-		super(Globals._SALE_ID_PREFX+currJobPostSrNum, title, description, creatorID);
+		super(Globals._JOB_ID_PREFX+currJobPostSrNum, title, description, creatorID);
 		this.setProposedPrice(proposedPrice);
 		this.setLowestPrice(0);
 		currJobPostSrNum += 1;
@@ -30,8 +30,8 @@ public class Job extends Post {
 	{
 		StringBuilder detailsStr = new StringBuilder(super.getPostDetails());
 		
-		detailsStr.append("Proposed Price:\t"+getProposedPrice());
-		detailsStr.append("Lowest Price:\t"+getLowestPrice());
+		detailsStr.append("Proposed Price:\t"+getProposedPrice()+"\n");
+		detailsStr.append("Lowest Price:\t"+getLowestPrice()+"\n");
 		
 		return detailsStr.toString();
 	}

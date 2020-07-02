@@ -18,10 +18,10 @@ public class Event extends Post {
 	@Override
 	public String getPostDetails() {
 		StringBuilder detailsStr = new StringBuilder(super.getPostDetails());
-		detailsStr.append("Venue:\t\t"+getVenue());
-		detailsStr.append("Date:\t\t"+getEventDate());
-		detailsStr.append("Capacity:\t\t"+getCapacity());
-		detailsStr.append("Attendees:\t\t"+getAttendeeCount());
+		detailsStr.append("Venue:\t\t"+getVenue()+"\n");
+		detailsStr.append("Date:\t\t"+getEventDate()+"\n");
+		detailsStr.append("Capacity:\t"+getCapacity()+"\n");
+		detailsStr.append("Attendees:\t"+getAttendeeCount()+"\n");
 		
 		return detailsStr.toString();
 	}

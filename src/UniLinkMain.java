@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class UniLinkMain {
 	
@@ -15,7 +16,8 @@ public class UniLinkMain {
 	public static void main(String[] args) {
 		
 		UniLinkMain driver = new UniLinkMain();
-
+		driver.loadTestData();
+		
 		driver.run();
 
 		// Closing open resources
@@ -56,7 +58,8 @@ public class UniLinkMain {
 		
 		switch(userChoice) {
 		case Globals._LOG_IN :		// 1 
-			break;
+			this.loggedInUser = this.scannerUtil.readString("Please enter username : ");
+		break;
 			
 		case Globals._QUIT :		// 2
 			break;
@@ -82,9 +85,8 @@ public class UniLinkMain {
 
 	// Get user choice in terms of operation. It will 
 	public int getChoice() {
-
-		System.out.print("Please Enter Your Choice : ");
-		return scannerUtil.readInt("Please Enter Choice Again :");
+		
+		return scannerUtil.readInt("Please Enter Your Choice :");
 
 	}
 	
@@ -100,30 +102,41 @@ public void executeOperation(int userChoice) {
 		break; 
 		
 		case Globals._NEW_JOB_POST :
-			if(this.createNewJobPost() != null) {
-				System.out.println();
+			Job retJob = this.createNewJobPost();
+			if(retJob != null) {
+				System.out.println("Success! Your job has been created with id "+retJob.getID());
 			}
 		break;
 		
 		case Globals._NEW_SALE_POST:
-			if(this.createNewSalePost() != null) {
-				System.out.println("");
+			Sale retSale = this.createNewSalePost();
+			if(retSale != null) {
+				System.out.println("Success! Your sale has been created with id "+retSale.getID());
 			}
 		break;
 		
 		case Globals._REPLY_TO_POST:
+			if(this.handleReply()) {
+				System.out.println("Your reply has been saved successfully");
+			}
 		break;
 			
+		// Displays only the posts that have been created by the logged in user
 		case Globals._DISPLAY_MY_POSTS:
+			this.displayUsersPost();
 		break;
 		
+		// Displays all the posts in the system. 
 		case Globals._DISPLAY_ALL_POSTS:
+			this.displayAllPosts();
 		break;
 		
 		case Globals._CLOSE_POST:
+			
 		break;
 		
 		case Globals._DELETE_POST:
+			
 		break;
 		
 		case Globals._LOGOUT:
@@ -134,7 +147,7 @@ public void executeOperation(int userChoice) {
 		}
 	}
 
-	
+	// Creates a New Event Post and adds into the Post arraylist
 	public Event createNewEventPost() {
 		
 		System.out.println("Enter details of the event below:");
@@ -144,10 +157,13 @@ public void executeOperation(int userChoice) {
 		String dateStr = scannerUtil.readString("Date [dd-mm-yyyy]:");
 		int capacity = scannerUtil.readInt("Capacity:");
 		
-		this.allPosts.add(new Event(title, description, this.loggedInUser, venue, dateStr, capacity));
+		Event newEvent = new Event(title, description, this.loggedInUser, venue, dateStr, capacity);
+		this.allPosts.add(newEvent);
+		return newEvent;
 	}
 	
 	
+	// Creates a New Job Post and adds into the Post arraylist
 	public Job createNewJobPost() {
 		
 		System.out.println("Enter details of the job below:");
@@ -155,10 +171,13 @@ public void executeOperation(int userChoice) {
 		String description = scannerUtil.readString("Description:");
 		double proposedPrice = scannerUtil.readDouble("Proposed Price:");
 
-		this.allPosts.add(new Job(title, description, this.loggedInUser, proposedPrice));
+		Job newJob = new Job(title, description, this.loggedInUser, proposedPrice);
+		this.allPosts.add(newJob);
+		return newJob;
 	}
 	
 	
+	// Creates a New Sale Post and adds into the Post arraylist
 	public Sale createNewSalePost() {
 		
 		System.out.println("Enter details of the item to sale below: ");
@@ -168,6 +187,87 @@ public void executeOperation(int userChoice) {
 		double askingPrice = scannerUtil.readDouble("Asking Price:");
 		double minRaise = scannerUtil.readDouble("Minimum Raise:");
 		
-		this.allPosts.add(new Sale(title, description, this.loggedInUser, askingPrice, minRaise));
+		Sale newSale = new Sale(title, description, this.loggedInUser, askingPrice, minRaise);
+		this.allPosts.add(newSale);
+		return newSale;
+	}
+
+	
+	public void displayUsersPost() {
+		for(Post p : this.allPosts) {
+			if(p.getCreatorID().contentEquals(loggedInUser)) {
+				System.out.println(p.getPostDetails());
+				System.out.println(Globals.LINE_SEPERATOR);
+			}
+		}
+	}
+	
+	
+	public void displayAllPosts() {
+		for(Post p : this.allPosts) {
+			System.out.println(p.getPostDetails());
+		}
+	}
+	
+	
+	// Handles the generic reply request
+	public boolean handleReply() {
+		
+		this.displayAllPosts();
+		String postID = scannerUtil.readString("Please enter post ID :");
+		
+		Post postRef = null;
+		for (int i = 0, postListLen = this.allPosts.size(); i < postListLen; i++) {
+			if(this.allPosts.get(i).getID().contentEquals(postID)) {
+				postRef = this.allPosts.get(i);
+				break;
+			}
+		}
+		
+		if(postRef instanceof Event) {
+			this.handleEventReply();
+		}else if (postRef instanceof Job){
+			this.handleJobReply();
+		}else if(postRef instanceof Sale) {
+			this.handleSaleReply();
+		}
+		
+		return true;
+	}
+
+	
+	// If the selected object turns out to be Event object then this will be called
+	public void handleEventReply() {
+		
+	}
+	
+	
+	// If the selected object turns out to be Job object then this will be called
+	public void handleJobReply() {
+			
+	}
+	
+	
+	// If the selected object turns out to be Sale object then this will be called
+	public void handleSaleReply() {
+		
+	}
+
+	
+	public void loadTestData() {
+		
+		this.allPosts.add(new Event("Welcome Day", "Formal Event", "S1", "RMIT Building 80", "20-09-2020", 100));
+		this.allPosts.add(new Event("Orientation Day", "Formal Event", "S2", "RMIT Building 80", "21-09-2020", 50));
+		this.allPosts.add(new Event("Welcome Bash", "Party", "S3", "RMIT Building 80", "22-09-2020", 60));
+		
+		this.allPosts.add(new Job("Software Developer", "Data Mine Field", "S1", 10000));
+		this.allPosts.add(new Job("Data Scientist", "rockspace hires", "S2", 23000));
+		this.allPosts.add(new Job("App Developer", "vTrendit.com", "S3", 30000));
+		
+		this.allPosts.add(new Sale("Iphone4", "Iphone Sale", "S1", 500, 10));
+		this.allPosts.add(new Sale("MacbookPro", "Macbook Sale", "S2", 450, 20));
+		this.allPosts.add(new Sale("WB", "WhiteBoard", "S3", 300, 15));
+		
+		System.out.println(this.allPosts.size());
 	}
 }

@@ -54,8 +54,6 @@ public class ScannerUtil {
 		boolean success = false;
 		int readVal = 0;
 		
-		System.out.print(inputStr);
-		
 		do {
 			try {
 				System.out.print(inputStr);
@@ -63,7 +61,6 @@ public class ScannerUtil {
 				success = true;
 			} catch (InputMismatchException | IllegalArgumentException ime) {
 				System.out.println("Please enter numeric value.");
-				System.out.print(inputStr);
 			}
 			
 			ScannerUtil.consoleReader().clearReader();
@@ -79,15 +76,14 @@ public class ScannerUtil {
 		boolean success = false;
 		double readVal = 0;
 		
-		System.out.print(inputInstr);
 		do {
 			
 			try {
+				 System.out.print(inputInstr);
 				 readVal = ScannerUtil.scannerInstance.consoleIn.nextDouble();
 				 success = true;
 			} catch (InputMismatchException ime) {
 				System.out.println("Please enter numeric value. ");
-				System.out.print(inputInstr);
 			}
 			
 			ScannerUtil.consoleReader().clearReader();
